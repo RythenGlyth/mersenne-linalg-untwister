@@ -4,7 +4,7 @@ This directory contains various examples of how you could use `mersenne_linalg_u
 
 ## Example 1: Twist Matrix
 
-See [/temper_check.py](/temper_check.py)
+See [/twist_check.py](/twist_check.py)
 
 This example shows how to use the `MersenneGF2.get_twist_matrix` function.
 
