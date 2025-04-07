@@ -22,7 +22,7 @@ This has following benefits over other implementations:
    ```
 3. Preparse the script using the following command:
    ```bash
-   sage --preparse symbolic_mersenne_cracker.sage; mv symbolic_mersenne_cracker.sage.py symbolic_mersenne_cracker.py
+   sage --preparse mersenne_linalg_untwister.sage; mv mersenne_linalg_untwister.sage.py mersenne_linalg_untwister.py
    ```
 4. You can now use the script in another Python script (see [examples](/examples))
 
@@ -50,11 +50,4 @@ A list of 625 integers representing the reconstructed internal state:
 - `MT[624]` is the index of the next value to be returned.
 
 #### Example Usage:
-```python
-from symbolic_mersenne_cracker import MersenneSolver
-
-solver = MersenneSolver()
-outputs = [123456789, (987654321, 0xFFFF0000), 135792468]  # Example outputs
-state = solver.reverse_state_by_outputs(outputs, initial_idx=0, check_solution=True, verbose=True)
-print("Recovered state:", state)
-```
+See [examples](/examples).
