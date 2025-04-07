@@ -28,7 +28,7 @@ class MersenneGF2:
             pass
         if(verbose): print("calculating twist matrix (this may take a while)")
         start_time = time.time()
-        twist_matrix = sage.matrix(sage.GF(2), 32 * 624, 32 * 624, sparse=True)
+        twist_matrix = sage.matrix(sage.GF(2), 32 * 624, 32 * 624)
         for i in range(0,624):
             for b in range(0,32):
                 if i < 227:
@@ -203,9 +203,9 @@ class MersenneSolver:
 
         right_side = right_side[:final_matrix_rows_i]
         
-        final_matrix = sage.matrix(sage.GF(2), final_matrix_rows_i, 32 * 624, sparse=True)
 
 
+        # final_matrix = sage.matrix(sage.GF(2), final_matrix_rows_i, 32 * 624)
         # ------- This is somehow slower --------
         # for start_row, end_row, twists in final_matrix_rows_twists:
         #     if end_row <= start_row: # Skip empty segments
@@ -215,17 +215,25 @@ class MersenneSolver:
         #     )
         # ----------------------------------------
         # This is faster
-        final_matrix = reduce(
-            lambda x,y: x.stack(y),
-            [
-                (final_matrix_rows[
-                    start_row
-                    :end_row
-                ] * (twist_matrix ** twists))
-                for (start_row,end_row,twists) in final_matrix_rows_twists
-            ]
-        )
+        # final_matrix = reduce(
+        #     lambda x,y: x.stack(y),
+        #     [
+        #         (final_matrix_rows[
+        #             start_row
+        #             :end_row
+        #         ] * (twist_matrix ** twists))
+        #         for (start_row,end_row,twists) in final_matrix_rows_twists
+        #     ]
+        # )
         # ----------------------------------------
+        # ------ This is the fastest --------
+        final_matrix = sage.block_matrix(
+            [
+                final_matrix_rows[start_row:end_row] * (twist_matrix ** twists)
+                for (start_row, end_row, twists) in final_matrix_rows_twists
+            ],
+            ncols = 1
+        )
 
 
 
